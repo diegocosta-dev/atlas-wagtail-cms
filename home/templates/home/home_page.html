@@ -1,8 +1,26 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
 {% block content %}
   <section id="home-page" class="container mx-auto">
-    home page
+    <div class="border-b border-grey-lighter py-16 lg:py-20">
+      <div>
+        {% image page.author_image fill-64x64 class="h-16 w-16 rounded-full" %}
+      </div>
+      <h1
+        class="pt-3 font-body text-4xl font-semibold text-primary dark:text-white md:text-5xl lg:text-6xl"
+      >
+        {{ page.hero_heading }}
+      </h1>
+      <p class="pt-3 font-body text-xl font-light text-primary dark:text-white">
+        {{ page.hero_summary }}
+      </p>
+
+      {% if page.hero_cta_link %}
+        <a href="{{ page.hero_cta_link }}" class="mt-12 block bg-secondary px-10 py-4 text-center font-body text-xl font-semibold text-white transition-colors hover:bg-green sm:inline-block sm:text-left sm:text-2xl">
+          {{ page.hero_cta_text }}
+        </a>
+      {% endif %}
+    </div>
   </section>
 {% endblock content %}
