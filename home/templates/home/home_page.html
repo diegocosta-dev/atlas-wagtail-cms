@@ -51,7 +51,7 @@
           Blog Posts
         </h3>
 
-        <a href="/blog" class="flex items-center pl-10 font-body italic text-green transition-colors hover:text-secondary dark:text-green-light dark:hover:text-secondary" >
+        <a href="{{ blog_index.url }}" class="flex items-center pl-10 font-body italic text-green transition-colors hover:text-secondary dark:text-green-light dark:hover:text-secondary" >
           All posts
           <img
             src="{% static 'img/long-arrow-right.png' %}"
@@ -62,27 +62,8 @@
       </div>
 
       <div class="pt-8">
-        {% for post in blog_posts %}
-          <div class="border-b border-grey-lighter pt-10 pb-8">
-            <span class="mb-4 inline-block rounded-full bg-green-light px-2 py-1 font-body text-sm text-green">
-              category
-            </span>
-            
-            <a href="/post" class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green dark:text-white dark:hover:text-secondary">
-              Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies
-            </a>
-
-            <div class="flex items-center pt-4">
-              <p class="pr-2 font-body font-light text-primary dark:text-white">
-                June 26, 2020
-              </p>
-
-              <span class="font-body text-grey dark:text-white">//</span>
-              <p class="pl-2 font-body font-light text-primary dark:text-white">
-                3 min read
-              </p>
-            </div>
-          </div>
+        {% for post in posts %}
+          {% include "components/post_card.html" with post=post %}
         {% endfor %}
       </div>
     </div>
