@@ -1,10 +1,10 @@
 from django.db import models
 
 from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 class HomePage(Page):
-    author_image = models.ForeignKey(
+    image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
         blank=True,
@@ -12,39 +12,54 @@ class HomePage(Page):
         related_name="+",
     )
 
-    hero_heading = models.TextField(blank=False, max_length=255)
-    hero_summary = models.TextField(blank=False, max_length=500)
-    hero_cta_label = models.CharField(max_length=50, blank=True)
-    hero_cta_page = models.ForeignKey(
+    heading = models.CharField(max_length=255, blank=True)
+    summary = models.TextField(blank=False, max_length=500)
+    cta_label = models.CharField(max_length=50, blank=True)
+    cta_page = models.ForeignKey(
         'wagtailcore.Page',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
-    hero_cta_url = models.URLField(blank=True)
+    cta_url = models.URLField(blank=True)
+
+    my_story_heading = models.CharField(max_length=255, blank=True, default="My Story")
+    my_story_content = models.TextField(blank=True, max_length=800)
 
     content_panels = [
-        FieldPanel('author_image'),
-        FieldPanel('hero_heading'),
-        FieldPanel('hero_summary'),
-        FieldPanel('hero_cta_label'),
-        FieldPanel('hero_cta_page'),
-        FieldPanel('hero_cta_url'),
+        FieldPanel('image'),
+        FieldPanel('heading'),
+        FieldPanel('summary'),
+        MultiFieldPanel([
+            FieldPanel('cta_label'),
+            FieldPanel('cta_page'),
+            FieldPanel('cta_url'),
+        ], heading="CTA Buttom"),
+        MultiFieldPanel([
+            FieldPanel('my_story_heading'),
+            FieldPanel('my_story_content'),
+        ], heading="My Story")
     ]
 
     @property
-    def hero_cta_link(self):
-        if self.hero_cta_page:
-            return self.hero_cta_page.url
-        elif self.hero_cta_url:
-            return self.hero_cta_url
+    def cta_link(self):
+        if self.cta_page:
+            return self.cta_page.url
+        elif self.cta_url:
+            return self.cta_url
         return None
     
     @property
-    def hero_cta_text(self):
-        if self.hero_cta_label:
-            return self.hero_cta_label
-        elif self.hero_cta_page:
-            return self.hero_cta_page.title
+    def cta_text(self):
+        if self.cta_label:
+            return self.cta_label
+        elif self.cta_page:
+            return self.cta_page.title
         return 'Read More'
+    
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['blog_posts'] = ['1', '2', '3']
+        # context['blog_posts'] = BlogPage.objects.live().public().orderBy('-first_published_at')[:3]
+        return context

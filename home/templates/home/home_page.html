@@ -3,24 +3,115 @@
 
 {% block content %}
   <section id="home-page" class="container mx-auto">
-    <div class="border-b border-grey-lighter py-16 lg:py-20">
+    <div class="border-b border-grey-lighter py-10 lg:py-16">
       <div>
-        {% image page.author_image fill-64x64 class="h-16 w-16 rounded-full" %}
+        {% image page.image fill-64x64 class="h-16 w-16 rounded-full" %}
       </div>
       <h1
         class="pt-3 font-body text-4xl font-semibold text-primary dark:text-white md:text-5xl lg:text-6xl"
       >
-        {{ page.hero_heading }}
+        {{ page.heading }}
       </h1>
       <p class="pt-3 font-body text-xl font-light text-primary dark:text-white">
-        {{ page.hero_summary }}
+        {{ page.summary }}
       </p>
 
-      {% if page.hero_cta_link %}
-        <a href="{{ page.hero_cta_link }}" class="mt-12 block bg-secondary px-10 py-4 text-center font-body text-xl font-semibold text-white transition-colors hover:bg-green sm:inline-block sm:text-left sm:text-2xl">
-          {{ page.hero_cta_text }}
+      {% if page.cta_link %}
+        <a href="{{ page.cta_link }}" class="mt-12 block bg-secondary px-10 py-4 text-center font-body text-xl font-semibold text-white transition-colors hover:bg-green sm:inline-block sm:text-left sm:text-2xl">
+          {{ page.cta_text }}
         </a>
       {% endif %}
+    </div>
+
+    <div class="border-b border-grey-lighter py-10 lg:py-16">
+      {% if page.my_story_heading %}
+        <div class="flex items-center pb-6">
+          <img src="{% static 'img/icon-story.png' %}" alt="icon story" />
+          <h3
+            class="ml-3 font-body text-2xl font-semibold text-primary dark:text-white"
+          >
+            {{ page.my_story_heading }}
+          </h3>
+        </div>
+      {% endif %}
+      
+      {% if page.my_story_content %}
+        <div>
+          <p class="font-body font-light text-primary dark:text-white">
+            {{ page.my_story_content|linebreaksbr }}
+          </p>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="py-16 lg:py-20">
+      <div class="flex items-center pb-6">
+        <img src="{% static 'img/icon-story.png' %}" alt="icon story">
+        <h3 class="ml-3 font-body text-2xl font-semibold text-primary dark:text-white">
+          Blog Posts
+        </h3>
+
+        <a href="/blog" class="flex items-center pl-10 font-body italic text-green transition-colors hover:text-secondary dark:text-green-light dark:hover:text-secondary" >
+          All posts
+          <img
+            src="{% static 'img/long-arrow-right.png' %}"
+            class="ml-3"
+            alt="arrow right"
+          />
+        </a>
+      </div>
+
+      <div class="pt-8">
+        {% for post in blog_posts %}
+          <div class="border-b border-grey-lighter pt-10 pb-8">
+            <span class="mb-4 inline-block rounded-full bg-green-light px-2 py-1 font-body text-sm text-green">
+              category
+            </span>
+            
+            <a href="/post" class="block font-body text-lg font-semibold text-primary transition-colors hover:text-green dark:text-white dark:hover:text-secondary">
+              Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies
+            </a>
+
+            <div class="flex items-center pt-4">
+              <p class="pr-2 font-body font-light text-primary dark:text-white">
+                June 26, 2020
+              </p>
+
+              <span class="font-body text-grey dark:text-white">//</span>
+              <p class="pl-2 font-body font-light text-primary dark:text-white">
+                3 min read
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pb-16 lg:pb-20">
+      <div class="flex items-center pb-6">
+        <img src="{% static 'img/icon-project.png' %}" alt="icon story" />
+        <h3 class="ml-3 font-body text-2xl font-semibold text-primary dark:text-white" >
+          My Projects
+        </h3>
+      </div>
+
+      <div>
+        <a href="/" class="mb-6 flex items-center justify-between border border-grey-lighter px-4 py-4 sm:px-6" >
+          <span class="w-9/10 pr-8">
+            <h4
+              class="font-body text-lg font-semibold text-primary dark:text-white"
+            >
+              TailwindCSS
+            </h4>
+            <p class="font-body font-light text-primary dark:text-white">
+              Rapidly build modern websites without ever leaving your HTML.
+            </p>
+          </span>
+          <span class="w-1/10">
+            <img src="{% static 'img/chevron-right.png' %}" class="mx-auto" alt="chevron right" />
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 {% endblock content %}
