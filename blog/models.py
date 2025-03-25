@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 from wagtail.models import Page, Orderable, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
@@ -56,7 +58,18 @@ class BlogIndexPage(Page):
 
   def get_context(self, request):
     context = super().get_context(request)
-    context['posts'] = BlogPage.objects.live().public().order_by('-first_published_at')
+    posts = BlogPage.objects.live().public().order_by('-first_published_at')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 12)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    context['posts'] = posts
     return context
 
 class BlogPage(Page):
